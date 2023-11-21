@@ -19,4 +19,26 @@ body {
     border-radius: 4px;
     padding: 5px;
   }
+
+#photo-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.photo-item {
+  margin: 10px;
+}
+
+.photo-item img {
+  width: 150px; /* Or your desired width */
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.photo-item p {
+  text-align: center;
+}
+
   
