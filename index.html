@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo Gallery</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Photo Gallery</h1>
+</header>
+
+<main>
+  <section id="upload-section">
+    <h2>Upload a Photograph</h2>
+    <form id="upload-form">
+      <input type="file" id="photo-upload" name="photo" accept="image/*" required>
+      <input type="text" id="photo-caption" name="caption" placeholder="Enter a caption...">
+      <button type="submit">Upload</button>
+    </form>
+  </section>
+
+  <section id="gallery-section">
+    <h2>Gallery</h2>
+    <div id="photo-gallery"></div>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
