@@ -34,24 +34,41 @@ function fetchPhotos() {
     .then(response => response.json())
     .then(photos => {
       const gallery = document.getElementById('photo-gallery');
-      gallery.innerHTML = ''; // Clear gallery before adding new photos
-      photos.forEach(photo => {
-        const photoItem = document.createElement('div');
-        photoItem.className = 'photo-item';
-        const image = document.createElement('img');
-        image.src = photo.url; // Assuming 'url' is the property containing the photo URL
-        image.alt = photo.caption; // Assuming 'caption' is the property containing the caption
-        const caption = document.createElement('p');
-        caption.textContent = photo.caption;
-        photoItem.appendChild(image);
-        photoItem.appendChild(caption);
-        gallery.appendChild(photoItem);
-      });
+      gallery.innerHTML = ''; // Clear the gallery before adding new photos.
+      
+      // Ensure 'photos' is actually an array and has items.
+      if (Array.isArray(photos) && photos.length > 0) {
+        photos.forEach(photo => {
+          const photoItem = document.createElement('div');
+          photoItem.className = 'photo-item';
+          
+          // Check if the photo object has the 'url' and 'caption' properties.
+          if(photo.url && photo.caption) {
+            const image = document.createElement('img');
+            image.src = photo.url; // Use the actual property name for the photo URL.
+            image.alt = photo.caption; // Use the actual property name for the caption.
+            
+            const caption = document.createElement('p');
+            caption.textContent = photo.caption; // Use the actual property name for the caption.
+            
+            photoItem.appendChild(image);
+            photoItem.appendChild(caption);
+            gallery.appendChild(photoItem);
+          } else {
+            // If there's no 'url' or 'caption', log an error or handle it appropriately.
+            console.error('Photo object is missing the url or caption property', photo);
+          }
+        });
+      } else {
+        // Handle the case where 'photos' is not an array or is empty.
+        console.error('Photos data is not an array or is empty', photos);
+      }
     })
     .catch(error => {
-      console.error('Error:', error);
+      console.error('Error fetching photos:', error);
     });
 }
+
 
 // Don't forget to call fetchPhotos to actually execute the function on page load or after photo uploads
 fetchPhotos();
