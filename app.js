@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
 function fetchPhotos() {
-  fetch('https://prod-20.northeurope.logic.azure.com/workflows/7d318bcac53c4199baeeb1ba3ad6a08b/triggers/manual/paths/invoke/rest/v1/photographs?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=DWRFuozOwOf1-VzQ3lJH1RGna2cIz3SIJciSkTaIGT0')
+  fetch('https://prod-14.northeurope.logic.azure.com:443/workflows/d1796592c81d4d238f1f9462b580ec50/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=kcVG7x0CvW9ugWmDkWUcUibkrcA83Gs2h8Q3qE5V5EI')
     .then(response => response.json())
     .then(photos => {
       const gallery = document.getElementById('photo-gallery');
