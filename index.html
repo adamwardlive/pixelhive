@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pixelhive</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixelhive</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -15,14 +15,13 @@
 <main>
   <section id="upload-section">
     <h2>Upload your Photographs!</h2>
-    <form id="upload-form">
+    <form id="upload-form" enctype="multipart/form-data">
       <input type="file" id="photo-upload" name="photo" accept="image/*" required>
       <input type="text" id="photo-caption" name="caption" placeholder="Enter a caption...">
       <button type="submit">Upload</button>
     </form>
   </section>
 
-  
   <section id="gallery-section">
     <h2>Gallery</h2>
     <div id="gallery"></div>
@@ -30,5 +29,33 @@
 </main>
 
 <script src="app.js"></script>
+<script>
+  document.getElementById('upload-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    var uploadUrl = 'https://prod-05.northeurope.logic.azure.com:443/workflows/d16fda7f5e084f4abf6574b81d11e46d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VOco_-4vvar98WT0aX7jJL2SviHzsybZzbTo9F_cJUk'; // Replace with your Logic App URL for the upload endpoint
+
+    fetch(uploadUrl, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Server response wasn\'t OK');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Success:', data);
+      // Optionally, call fetchAndDisplayImages() here to refresh the gallery
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  });
+</script>
+
 </body>
 </html>
+
