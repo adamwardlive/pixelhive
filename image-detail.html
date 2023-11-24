@@ -34,11 +34,11 @@
 <body>
 
 <div id="image-detail-container">
-  <img id="detail-image" src="" alt="Detailed View" />
+  <img id="detail-image" src="" alt="Detailed View">
   <div id="image-details">
-    <!-- Image details will be added here -->
+    <!-- Image details will be inserted here -->
   </div>
-  <button onclick="window.history.back()">Back to Gallery</button>
+  <button id="back-button">Back to Gallery</button>
 </div>
 
 <script>
@@ -56,10 +56,20 @@
       <p class="detail-item"><strong>Timestamp:</strong> ${new Date(Number(decodeURIComponent(timestamp))).toLocaleString()}</p>
       <p class="detail-item"><strong>Caption:</strong> ${decodeURIComponent(caption)}</p>
     `;
-  }
-  
+  };
+
+  document.getElementById('back-button').addEventListener('click', function() {
+    // Check if the previous page is from the same origin
+    if (document.referrer.indexOf(window.location.origin) !== -1) {
+      window.history.back();
+    } else {
+      // Provide the direct URL to the gallery page as a fallback
+      window.location.href = 'https://gray-field-0eaf44a10.4.azurestaticapps.net/'; // Update this path as necessary
+    }
+  });
 </script>
 
 </body>
 </html>
+
 
