@@ -10,28 +10,30 @@ document.addEventListener('DOMContentLoaded', function() {
     var captionInput = document.getElementById('photo-caption');
     formData.append('photo', photoInput.files[0]);
     formData.append('caption', captionInput.value);
-
-    var uploadUrl = 'https://prod-05.northeurope.logic.azure.com:443/workflows/d16fda7f5e084f4abf6574b81d11e46d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VOco_-4vvar98WT0aX7jJL2SviHzsybZzbTo9F_cJUk';
-
+  
+    var uploadUrl = 'Your-Logic-App-POST-Endpoint'; // Replace with your Logic App URL
+  
     fetch(uploadUrl, {
       method: 'POST',
       body: formData
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        console.error(`HTTP error! status: ${response.status}`);
+        return response.text().then(text => Promise.reject(`Error: ${text}`));
       }
-      return response.text();
+      // The response may not contain a body for a 202 Accepted
+      return response.text().then(text => text ? JSON.parse(text) : {});
     })
-    .then(text => {
-      let data = text ? JSON.parse(text) : {};
+    .then(data => {
       console.log('Success:', data);
       fetchAndDisplayImages(); // Refresh the gallery
     })
-    .catch((error) => {
-      console.error('Error:', error);
+    .catch(error => {
+      console.error('Error during upload:', error);
     });
   }
+  
 
   function fetchAndDisplayImages() {
     const blobStorageBaseUrl = 'https://pixelhiveb00787643.blob.core.windows.net/pixelhive-img-share-b00787643';
