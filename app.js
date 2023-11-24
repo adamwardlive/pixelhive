@@ -53,9 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
           const imageUrl = `${blobStorageBaseUrl}/${filePath}`;
   
           const linkElement = document.createElement('a');
-          linkElement.href = `image-detail.html?image=${encodeURIComponent(imageUrl)}&name=${encodeURIComponent(item.fileName)}&timestamp=${encodeURIComponent(item._ts)}&caption=${encodeURIComponent(item.caption)}`;
-          linkElement.target = '_blank';
-  
+          linkElement.href = `image-detail.html?image=${encodeURIComponent(imageUrl)}&name=${encodeURIComponent(item.fileName)}&timestamp=${encodeURIComponent(item._ts)}&caption=${encodeURIComponent(item.caption)}`;  
           const imgElement = document.createElement('img');
           imgElement.src = imageUrl;
           imgElement.alt = item.fileName;
