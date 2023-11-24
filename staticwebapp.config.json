@@ -1,14 +1,29 @@
 {
   "routes": [
     {
+      "route": "/login",
+      "rewrite": "/.auth/login/aad",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/guest-access",
+      "rewrite": "/index.html",
+      "allowedRoles": []
+    },
+    {
       "route": "/*",
       "allowedRoles": ["admin"]
     }
   ],
   "responseOverrides": {
     "401": {
-      "redirect": "/.auth/login/aad",
+      "redirect": "/login",
       "statusCode": 302
+    },
+    "404": {
+      "redirect": "/index.html",
+      "statusCode": 404
     }
   }
 }
+
