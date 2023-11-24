@@ -29,55 +29,6 @@
 </main>
 
 <script src="app.js"></script>
-<script>
-  document.getElementById('upload-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    var formData = new FormData(this);
-    var uploadUrl = 'https://prod-05.northeurope.logic.azure.com:443/workflows/d16fda7f5e084f4abf6574b81d11e46d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VOco_-4vvar98WT0aX7jJL2SviHzsybZzbTo9F_cJUk'; // Replace with your Logic App URL for the upload endpoint
-
-    fetch('your-logic-app-url', {
-  method: 'POST',
-  body: formData
-})
-.then(response => {
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  // Only attempt to parse JSON if there's content
-  if (response.headers.get("Content-Length") === "0") {
-    return null; // Or some other default value
-  } else {
-    return response.json();
-  }
-})
-.then(data => {
-  if (data) {
-    console.log('Success:', data);
-  } else {
-    console.log('No content in response');
-  }
-  // Proceed with your logic here
-})
-.catch(error => {
-  console.error('Error:', error);
-});
-
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Server response wasn\'t OK');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Success:', data);
-      // Optionally, call fetchAndDisplayImages() here to refresh the gallery
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-  });
-</script>
 
 </body>
 </html>
