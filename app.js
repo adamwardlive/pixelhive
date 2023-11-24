@@ -26,11 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function fetchAndDisplayImages() {
-    // The base URL for your Blob Storage container
-    // Ensure there is no trailing slash here
-    const blobStorageBaseUrl = 'https://pixelhiveb00787643.blob.core.windows.net';
+    const blobStorageBaseUrl = 'https://pixelhiveb00787643.blob.core.windows.net/pixelhive-img-share-b00787643';
   
-    // The URL of your Logic App's HTTP GET endpoint
     const logicAppUrl = 'https://prod-14.northeurope.logic.azure.com:443/workflows/d1796592c81d4d238f1f9462b580ec50/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=kcVG7x0CvW9ugWmDkWUcUibkrcA83Gs2h8Q3qE5V5EI';
   
     fetch(logicAppUrl)
@@ -38,32 +35,34 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!response.ok) {
           throw new Error('Network response was not ok: ' + response.statusText);
         }
-        return response.json(); // Parse the JSON in the response
+        return response.json();
       })
       .then(data => {
-        const galleryElement = document.getElementById('gallery'); // Ensure this ID matches the one in your HTML
-  
-        // Ensure the gallery element exists
+        const galleryElement = document.getElementById('gallery');
         if (!galleryElement) {
           console.error('The gallery element does not exist.');
           return;
         }
   
-        // Clear the gallery container
         galleryElement.innerHTML = '';
   
-        // Iterate over each item in the response data
-        data.forEach(item => {
-          // Construct the full image URL
-          // Ensure the blob name does not start with a slash
-          const blobName = item.filePath.startsWith('/') ? item.filePath.substring(1) : item.filePath;
-          const imageUrl = `${blobStorageBaseUrl}/${blobName}`;
+        data.sort((a, b) => b._ts - a._ts); // Sort based on a timestamp field
   
-          // Create an image element
+        data.forEach(item => {
+          const filePath = item.filePath.startsWith('/pixelhive-img-share-b00787643/') ? item.filePath.split('/pixelhive-img-share-b00787643/')[1] : item.filePath;
+          const imageUrl = `${blobStorageBaseUrl}/${filePath}`;
+  
+          const linkElement = document.createElement('a');
+          linkElement.href = `image-detail.html?image=${encodeURIComponent(imageUrl)}&name=${encodeURIComponent(item.fileName)}&timestamp=${encodeURIComponent(item._ts)}&caption=${encodeURIComponent(item.caption)}`;
+          linkElement.target = '_blank';
+  
           const imgElement = document.createElement('img');
           imgElement.src = imageUrl;
-          imgElement.alt = item.fileName; // Use the fileName as alt text for accessibility
-          galleryElement.appendChild(imgElement); // Append the image to the gallery container
+          imgElement.alt = item.fileName;
+          imgElement.classList.add('gallery-image');
+  
+          linkElement.appendChild(imgElement);
+          galleryElement.appendChild(linkElement);
         });
       })
       .catch(error => {

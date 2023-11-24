@@ -42,3 +42,18 @@ body {
 }
 
   
+#gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Replace 200px with the size of the square you want */
+  grid-gap: 16px; /* This adds space between the images */
+  margin: auto;
+  width: 90%; /* Adjust the width as needed */
+  max-width: 1200px; /* Adjust the maximum width as needed */
+}
+
+#gallery img {
+  width: 100%;
+  height: 200px; /* Adjust to the desired square size */
+  object-fit: cover; /* This will cover the square area, cropping the image if necessary */
+  border-radius: 8px; /* Optional: adds rounded corners */
+}

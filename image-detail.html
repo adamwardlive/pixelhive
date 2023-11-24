@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Detail</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #image-detail-container {
+      max-width: 800px;
+      margin: 20px auto;
+      text-align: center;
+    }
+    #detail-image {
+      max-width: 100%;
+      height: auto;
+    }
+    #image-details {
+      margin-top: 20px;
+    }
+    .detail-item {
+      margin-bottom: 10px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div id="image-detail-container">
+  <img id="detail-image" src="" alt="Detailed View" />
+  <div id="image-details">
+    <!-- Image details will be added here -->
+  </div>
+  <button onclick="window.history.back()">Back to Gallery</button>
+</div>
+
+<script>
+  window.onload = function() {
+    const params = new URLSearchParams(window.location.search);
+    const imageUrl = params.get('image');
+    const name = params.get('name');
+    const timestamp = params.get('timestamp');
+    const caption = params.get('caption');
+
+    document.getElementById('detail-image').src = decodeURIComponent(imageUrl);
+    const detailsContainer = document.getElementById('image-details');
+    detailsContainer.innerHTML = `
+      <p class="detail-item"><strong>Name:</strong> ${decodeURIComponent(name)}</p>
+      <p class="detail-item"><strong>Timestamp:</strong> ${new Date(Number(decodeURIComponent(timestamp))).toLocaleString()}</p>
+      <p class="detail-item"><strong>Caption:</strong> ${decodeURIComponent(caption)}</p>
+    `;
+  }
+  
+</script>
+
+</body>
+</html>
+
