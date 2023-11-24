@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function fetchAndDisplayImages() {
     // The base URL for your Blob Storage container
-    const blobStorageBaseUrl = 'https://pixelhiveb00787643.blob.core.windows.net/pixelhive-img-share-b00787643/';
+    const blobStorageBaseUrl = 'https://pixelhive-blob-b00787643.blob.core.windows.net/pixelhive-img-share-b00787643/';
   
     // The URL of your Logic App's HTTP GET endpoint
     const logicAppUrl = 'https://prod-14.northeurope.logic.azure.com:443/workflows/d1796592c81d4d238f1f9462b580ec50/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=kcVG7x0CvW9ugWmDkWUcUibkrcA83Gs2h8Q3qE5V5EI';
