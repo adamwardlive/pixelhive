@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     formData.append('photo', photoInput.files[0]);
     formData.append('caption', captionInput.value);
   
-    var uploadUrl = 'Your-Logic-App-POST-Endpoint'; // Replace with your Logic App URL
+    var uploadUrl = 'https://prod-05.northeurope.logic.azure.com:443/workflows/d16fda7f5e084f4abf6574b81d11e46d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VOco_-4vvar98WT0aX7jJL2SviHzsybZzbTo9F_cJUk'; // Replace with your Logic App URL
   
     fetch(uploadUrl, {
       method: 'POST',
