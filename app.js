@@ -19,14 +19,13 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => {
       if (!response.ok) {
-        console.error(`HTTP error! status: ${response.status}`);
-        return response.text().then(text => Promise.reject(`Error: ${text}`));
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      return response.text().then(text => text ? JSON.parse(text) : {});
+      return response.json();
     })
     .then(data => {
       console.log('Success:', data);
-      // Add any action you want to take after successful upload
+      window.location.reload(); // This will refresh the page
     })
     .catch(error => {
       console.error('Error during upload:', error);
