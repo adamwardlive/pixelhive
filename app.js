@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
           container.appendChild(editButton);
           container.appendChild(deleteButton);
           galleryElement.appendChild(container);
-        });
+        
       })
       .catch(error => {
         console.error('There has been a problem with your fetch operation:', error);
