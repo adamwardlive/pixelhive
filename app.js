@@ -1,5 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('upload-form').addEventListener('submit', function(e) {
+  var uploadForm = document.getElementById('upload-form');
+
+  // Clear the form on page load
+  uploadForm.reset();
+
+  uploadForm.addEventListener('submit', function(e) {
     e.preventDefault();
     uploadPhoto();
   });
