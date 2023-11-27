@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function uploadPhoto() {
     var formData = new FormData();
-    var photoInput = document.getElementById('photo-upload');
-    var captionInput = document.getElementById('photo-caption');
-    formData.append('photo', photoInput.files[0]);
-    formData.append('caption', captionInput.value);
-  
-    var uploadUrl = 'https://prod-05.northeurope.logic.azure.com:443/workflows/d16fda7f5e084f4abf6574b81d11e46d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VOco_-4vvar98WT0aX7jJL2SviHzsybZzbTo9F_cJUk'; // Replace with your Logic App URL
-  
+    var photoInput = document.getElementById('photo-upload'); // Make sure this is the ID of your file input
+    formData.append('file', photoInput.files[0]); // 'file' is the expected key for the file in the Logic App
+
+    var uploadUrl = 'YOUR_LOGIC_APP_URL'; // Replace with your actual Logic App URL
+
+    // No need to explicitly set 'Content-Type' header for 'multipart/form-data', 
+    // the browser will automatically set it along with the boundary parameter
     fetch(uploadUrl, {
       method: 'POST',
       body: formData
@@ -22,12 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error(`HTTP error! status: ${response.status}`);
         return response.text().then(text => Promise.reject(`Error: ${text}`));
       }
-      // The response may not contain a body for a 202 Accepted
       return response.text().then(text => text ? JSON.parse(text) : {});
     })
     .then(data => {
       console.log('Success:', data);
-      fetchAndDisplayImages(); // Refresh the gallery
+      // Add any action you want to take after successful upload
     })
     .catch(error => {
       console.error('Error during upload:', error);
