@@ -74,6 +74,19 @@ document.addEventListener('DOMContentLoaded', function() {
   
           linkElement.appendChild(imgElement);
           galleryElement.appendChild(linkElement);
+          const editButton = document.createElement('button');
+          editButton.innerText = 'Edit';
+          editButton.onclick = function() { editImage(item.id); }; // Placeholder function for editing
+        
+          const deleteButton = document.createElement('button');
+          deleteButton.innerText = 'Delete';
+          deleteButton.onclick = function() { deleteImage(item.id); }; // Placeholder function for deleting
+        
+          const container = document.createElement('div');
+          container.appendChild(imageElement);
+          container.appendChild(editButton);
+          container.appendChild(deleteButton);
+          galleryElement.appendChild(container);
         });
       })
       .catch(error => {
