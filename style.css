@@ -57,3 +57,5 @@ body {
   object-fit: cover; /* This will cover the square area, cropping the image if necessary */
   border-radius: 8px; /* Optional: adds rounded corners */
 }
+
+
