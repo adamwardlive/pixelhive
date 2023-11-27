@@ -58,7 +58,14 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('There has been a problem with your fetch operation:', error);
     });
   }
+<<<<<<< HEAD
 
   // Call fetchAndDisplayImages when the page loads to display existing images
   fetchAndDisplayImages();
 }); 
+=======
+  
+  // Call the function to fetch and display images
+  fetchAndDisplayImages();  
+});
+>>>>>>> 8269f03cb94a78b9ab68aa32cfc75b53bb896701
