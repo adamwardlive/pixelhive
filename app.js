@@ -72,6 +72,19 @@ document.addEventListener('DOMContentLoaded', function() {
           imgElement.alt = item.fileName;
           imgElement.classList.add('gallery-image');
   
+          const updateButton = document.createElement('button');
+          updateButton.innerText = 'Update';
+          updateButton.onclick = function() { showUpdateForm(item); };
+          linkElement.appendChild(updateButton);
+
+          // Delete button
+          const deleteButton = document.createElement('button');
+          deleteButton.innerText = 'Delete';
+          deleteButton.onclick = function() { deleteImage(item.id); };
+          linkElement.appendChild(deleteButton);
+
+          galleryElement.appendChild(linkElement);
+
           linkElement.appendChild(imgElement);
           galleryElement.appendChild(linkElement);
         });
