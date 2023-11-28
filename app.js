@@ -72,18 +72,19 @@ document.addEventListener('DOMContentLoaded', function() {
   
           const updateButton = document.createElement('button');
           updateButton.innerText = 'Update';
-          updateButton.onclick = function() { showUpdateForm(item); };
+          updateButton.onclick = function(event) {
+            event.stopPropagation();
+            showUpdateForm(item);
+          };
           linkElement.appendChild(updateButton);
 
           const deleteButton = document.createElement('button');
           deleteButton.innerText = 'Delete';
-          deleteButton.onclick = function() { deleteImage(item.id); };
+          deleteButton.onclick = function(event) {
+            event.stopPropagation();
+            deleteImage(item.id);
+          };
           linkElement.appendChild(deleteButton);
-
-          galleryElement.appendChild(linkElement);
-
-          linkElement.appendChild(imgElement);
-          galleryElement.appendChild(linkElement);
         });
       })
       .catch(error => {
