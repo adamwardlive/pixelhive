@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function deleteImage(imageId) {
-    var deleteUrl = 'https://prod-18.eastus.logic.azure.com/workflows/473e86610ee54b3db042efd470f95cb3/triggers/manual/paths/invoke/rest/v1/photographs/{PhotographID}?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hcIZYduJnOlFxw3LoQHSq8oFHDz6_1Cwq4z28GpVz7M'; // Replace with your actual Logic App DELETE endpoint URL
+    var deleteUrl = 'https://prod-52.northeurope.logic.azure.com:443/workflows/e20b0a7c9bd44a4ebdc0f78ba4805284/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=NlDLlEi3MEJhdjVXcEy-EiOuszn-p4MLSJrEelYe-ag'; // Replace with your actual Logic App DELETE endpoint URL
 
     fetch(deleteUrl, {
       method: 'DELETE',
