@@ -1,17 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-  var uploadForm = document.getElementById('upload-form');
-
-  // Clear the form on page load
-  uploadForm.reset();
-
-  uploadForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    uploadPhoto();
-  });
-
-
   function deleteImage(imageId) {
-    var deleteUrl = 'https://prod-52.northeurope.logic.azure.com:443/workflows/e20b0a7c9bd44a4ebdc0f78ba4805284/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=NlDLlEi3MEJhdjVXcEy-EiOuszn-p4MLSJrEelYe-ag'; // Replace with your actual Logic App DELETE endpoint URL
+    var deleteUrl = 'https://prod-18.eastus.logic.azure.com/workflows/473e86610ee54b3db042efd470f95cb3/triggers/manual/paths/invoke/rest/v1/photographs/{PhotographID}?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hcIZYduJnOlFxw3LoQHSq8oFHDz6_1Cwq4z28GpVz7M'; // Replace with your actual Logic App DELETE endpoint URL
 
     fetch(deleteUrl, {
       method: 'DELETE',
@@ -34,6 +23,16 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error during deletion:', error);
     });
   }
+
+  var uploadForm = document.getElementById('upload-form');
+
+  // Clear the form on page load
+  uploadForm.reset();
+
+  uploadForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    uploadPhoto();
+  });
 
   function uploadPhoto() {
     var formData = new FormData();
@@ -64,7 +63,22 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
 
-  function fetchAndDisplayImages() {
+  
+    // After creating imgElement, create a delete button
+    data.forEach(item => {
+      // ... (existing code) ...
+
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.onclick = function() {
+        deleteImage(item.id); // Assume item has an `id` property that is the image ID
+      };
+
+      linkElement.appendChild(imgElement);
+      linkElement.appendChild(deleteButton); // Append the delete button next to the image
+      galleryElement.appendChild(linkElement);
+    });
+function fetchAndDisplayImages() {
     const blobStorageBaseUrl = 'https://pixelhiveb00787643.blob.core.windows.net/pixelhive-img-share-b00787643';
   
     const logicAppUrl = 'https://prod-14.northeurope.logic.azure.com:443/workflows/d1796592c81d4d238f1f9462b580ec50/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=kcVG7x0CvW9ugWmDkWUcUibkrcA83Gs2h8Q3qE5V5EI';
@@ -98,18 +112,14 @@ document.addEventListener('DOMContentLoaded', function() {
           imgElement.alt = item.fileName;
           imgElement.classList.add('gallery-image');
   
-          
-          const deleteButton = document.createElement('button');
-          deleteButton.textContent = 'Delete';
-          deleteButton.onclick = function() {
-            deleteImage(item.id); // Assume item has an `id` property that is the image ID
-          };
-    
           linkElement.appendChild(imgElement);
-          linkElement.appendChild(deleteButton); // Append the delete button next to the image
           galleryElement.appendChild(linkElement);
         });
-
+      })
+      .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+      });
+  }
   
   // Call the function to fetch and display images
   fetchAndDisplayImages();  
