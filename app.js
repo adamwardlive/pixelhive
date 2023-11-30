@@ -96,6 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
           const deleteButton = document.createElement('button');
           deleteButton.textContent = 'Delete';
           deleteButton.onclick = function() {
+            event.preventDefault(); // Prevent the default anchor tag behavior
+            event.stopPropagation(); // Stop the click from "bubbling" up to other elements
             deleteImage(item.id); // Replace with the correct property for image ID
           };
   
