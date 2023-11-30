@@ -9,6 +9,32 @@ document.addEventListener('DOMContentLoaded', function() {
     uploadPhoto();
   });
 
+
+  function deleteImage(imageId) {
+    var deleteUrl = 'https://prod-52.northeurope.logic.azure.com:443/workflows/e20b0a7c9bd44a4ebdc0f78ba4805284/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=NlDLlEi3MEJhdjVXcEy-EiOuszn-p4MLSJrEelYe-ag'; // Replace with your actual Logic App DELETE endpoint URL
+
+    fetch(deleteUrl, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: imageId }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Image deleted successfully:', data);
+      window.location.reload(); // This will refresh the page
+    })
+    .catch(error => {
+      console.error('Error during deletion:', error);
+    });
+  }
+
   function uploadPhoto() {
     var formData = new FormData();
     var photoInput = document.getElementById('photo-upload'); // Make sure this is the ID of your file input
@@ -72,14 +98,18 @@ document.addEventListener('DOMContentLoaded', function() {
           imgElement.alt = item.fileName;
           imgElement.classList.add('gallery-image');
   
+          
+          const deleteButton = document.createElement('button');
+          deleteButton.textContent = 'Delete';
+          deleteButton.onclick = function() {
+            deleteImage(item.id); // Assume item has an `id` property that is the image ID
+          };
+    
           linkElement.appendChild(imgElement);
+          linkElement.appendChild(deleteButton); // Append the delete button next to the image
           galleryElement.appendChild(linkElement);
         });
-      })
-      .catch(error => {
-        console.error('There has been a problem with your fetch operation:', error);
-      });
-  }
+
   
   // Call the function to fetch and display images
   fetchAndDisplayImages();  
