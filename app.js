@@ -1,4 +1,40 @@
 document.addEventListener('DOMContentLoaded', function() {
+  var uploadForm = document.getElementById('upload-form');
+
+  // Clear the form on page load
+  uploadForm.reset();
+
+  uploadForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    uploadPhoto();
+  });
+
+  function uploadPhoto() {
+    var formData = new FormData();
+    var photoInput = document.getElementById('photo-upload'); // Make sure this is the ID of your file input
+    formData.append('file', photoInput.files[0]); // 'file' is the expected key for the file in the Logic App
+
+    var uploadUrl = 'https://prod-05.northeurope.logic.azure.com:443/workflows/d16fda7f5e084f4abf6574b81d11e46d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VOco_-4vvar98WT0aX7jJL2SviHzsybZzbTo9F_cJUk'; // Replace with your actual Logic App URL
+
+    fetch(uploadUrl, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Success:', data);
+      window.location.reload(); // This will refresh the page
+    })
+    .catch(error => {
+      console.error('Error during upload:', error);
+    });
+  }
+
   function deleteImage(imageId) {
     var deleteUrl = 'https://prod-18.eastus.logic.azure.com/workflows/473e86610ee54b3db042efd470f95cb3/triggers/manual/paths/invoke/rest/v1/photographs/{PhotographID}?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hcIZYduJnOlFxw3LoQHSq8oFHDz6_1Cwq4z28GpVz7M'; // Replace with your actual Logic App DELETE endpoint URL
 
@@ -24,65 +60,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  var uploadForm = document.getElementById('upload-form');
-
-  // Clear the form on page load
-  uploadForm.reset();
-
-  uploadForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    uploadPhoto();
-  });
-
-  function uploadPhoto() {
-    var formData = new FormData();
-    var photoInput = document.getElementById('photo-upload'); // Make sure this is the ID of your file input
-    formData.append('file', photoInput.files[0]); // 'file' is the expected key for the file in the Logic App
-
-    var uploadUrl = 'https://prod-05.northeurope.logic.azure.com:443/workflows/d16fda7f5e084f4abf6574b81d11e46d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VOco_-4vvar98WT0aX7jJL2SviHzsybZzbTo9F_cJUk'; // Replace with your actual Logic App URL
-
-    // No need to explicitly set 'Content-Type' header for 'multipart/form-data', 
-    // the browser will automatically set it along with the boundary parameter
-    fetch(uploadUrl, {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Success:', data);
-      window.location.reload(); // This will refresh the page
-    })
-    .catch(error => {
-      console.error('Error during upload:', error);
-    });
-  }
-  
-
-  
-    // After creating imgElement, create a delete button
-    data.forEach(item => {
-      // ... (existing code) ...
-
-      const deleteButton = document.createElement('button');
-      deleteButton.textContent = 'Delete';
-      deleteButton.onclick = function() {
-        deleteImage(item.id); // Assume item has an `id` property that is the image ID
-      };
-
-      linkElement.appendChild(imgElement);
-      linkElement.appendChild(deleteButton); // Append the delete button next to the image
-      galleryElement.appendChild(linkElement);
-    });
-function fetchAndDisplayImages() {
+  function fetchAndDisplayImages() {
     const blobStorageBaseUrl = 'https://pixelhiveb00787643.blob.core.windows.net/pixelhive-img-share-b00787643';
-  
     const logicAppUrl = 'https://prod-14.northeurope.logic.azure.com:443/workflows/d1796592c81d4d238f1f9462b580ec50/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=kcVG7x0CvW9ugWmDkWUcUibkrcA83Gs2h8Q3qE5V5EI';
-  
+
     fetch(logicAppUrl)
       .then(response => {
         if (!response.ok) {
@@ -112,7 +93,14 @@ function fetchAndDisplayImages() {
           imgElement.alt = item.fileName;
           imgElement.classList.add('gallery-image');
   
+          const deleteButton = document.createElement('button');
+          deleteButton.textContent = 'Delete';
+          deleteButton.onclick = function() {
+            deleteImage(item.id); // Replace with the correct property for image ID
+          };
+  
           linkElement.appendChild(imgElement);
+          linkElement.appendChild(deleteButton); // Append the delete button next to the image
           galleryElement.appendChild(linkElement);
         });
       })
@@ -120,10 +108,11 @@ function fetchAndDisplayImages() {
         console.error('There has been a problem with your fetch operation:', error);
       });
   }
-  
+
   // Call the function to fetch and display images
-  fetchAndDisplayImages();  
+  fetchAndDisplayImages();
 });
+
 
 
 
