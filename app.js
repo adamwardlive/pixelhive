@@ -60,9 +60,44 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  function updateImage(imageId) {
-    var updateUrl = 'https://prod-52.northeurope.logic.azure.com:443/workflows/e20b0a7c9bd44a4ebdc0f78ba4805284/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=NlDLlEi3MEJhdjVXcEy-EiOuszn-p4MLSJrEelYe-ag'; // Replace with your actual Logic App DELETE endpoint URL
+function updateImage(imageId) {
+  // Prompt the user for new metadata (e.g., new caption)
+  var newCaption = prompt("Enter new caption for the image:", "");
+
+  // Check if the user entered a caption or clicked cancel
+  if (newCaption === null || newCaption === "") {
+    console.log("Update cancelled or no new caption entered.");
+    return; // Exit the function if no new caption
   }
+
+  var updateUrl = 'https://prod-52.northeurope.logic.azure.com:443/workflows/YOUR_LOGIC_APP_UPDATE_WORKFLOW_ID/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=YOUR_LOGIC_APP_SIG'; // Replace with your actual Logic App UPDATE endpoint URL
+
+  var updateData = {
+    id: imageId,
+    caption: newCaption
+  };
+
+  fetch(updateUrl, {
+    method: 'POST', // Assuming the Logic App uses a POST method for updates
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updateData),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Image updated successfully:', data);
+    window.location.reload(); // Refresh the page to reflect the changes
+  })
+  .catch(error => {
+    console.error('Error during update:', error);
+  });
+}
   
   function fetchAndDisplayImages() {
     const blobStorageBaseUrl = 'https://pixelhiveb00787643.blob.core.windows.net/pixelhive-img-share-b00787643';
