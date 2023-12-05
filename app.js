@@ -59,7 +59,11 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error during deletion:', error);
     });
   }
-
+  
+  function updateImage(imageId) {
+    var updateUrl = 'https://prod-52.northeurope.logic.azure.com:443/workflows/e20b0a7c9bd44a4ebdc0f78ba4805284/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=NlDLlEi3MEJhdjVXcEy-EiOuszn-p4MLSJrEelYe-ag'; // Replace with your actual Logic App DELETE endpoint URL
+  }
+  
   function fetchAndDisplayImages() {
     const blobStorageBaseUrl = 'https://pixelhiveb00787643.blob.core.windows.net/pixelhive-img-share-b00787643';
     const logicAppUrl = 'https://prod-14.northeurope.logic.azure.com:443/workflows/d1796592c81d4d238f1f9462b580ec50/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=kcVG7x0CvW9ugWmDkWUcUibkrcA83Gs2h8Q3qE5V5EI';
@@ -100,9 +104,18 @@ document.addEventListener('DOMContentLoaded', function() {
             event.stopPropagation(); // Stop the click from "bubbling" up to other elements
             deleteImage(item.id); // Replace with the correct property for image ID
           };
+
+          const updateButton = document.createElement('button');
+          updateButton.textContent = 'Update';
+          updateButton.onclick = function() {
+            event.preventDefault(); // Prevent the default anchor tag behavior
+            event.stopPropagation(); // Stop the click from "bubbling" up to other elements
+            updateImage(item.id); // Replace with the correct property for image ID
+          };
   
           linkElement.appendChild(imgElement);
           linkElement.appendChild(deleteButton); // Append the delete button next to the image
+          linkElement.appendChild(updateButton);
           galleryElement.appendChild(linkElement);
         });
       })
